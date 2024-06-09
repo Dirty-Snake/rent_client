@@ -17,7 +17,7 @@ export const useRentStart = () => {
       try {
         await mutateAsync(data);
         await queryClient?.invalidateQueries({ queryKey: ['EQUIPMENTS_DATA'] });
-      } catch (e) {
+      } catch (e: any) {
         message.error(e?.message)
       }
     },

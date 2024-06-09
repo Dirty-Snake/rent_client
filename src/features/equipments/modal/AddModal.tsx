@@ -1,6 +1,6 @@
 import {
   Button,
-  Col, DatePicker,
+  Col,
   Form,
   Input, message,
   Select, Spin,
@@ -11,7 +11,6 @@ import React, { useEffect } from "react";
 import { useAddEquipments } from "../../../entities/equipments/hooks/useAddEquipments";
 import useTagData from "../../../entities/tags/hooks/useTagData";
 import useCategoriesData from "../../../entities/categories/hooks/useCategoriesData";
-import useUserData from "../../../entities/user/hooks/useUserData";
 
 export default function AddModal({
                                    onClose,

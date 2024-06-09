@@ -1,6 +1,6 @@
 import { apiToken } from "../../../api/ApiWithToken";
 
-export async function getEquipmentsData(currentPage: number, category: string, teg: string, availability){
+export async function getEquipmentsData(currentPage: number, category: string, teg: string, availability: string | null){
 
   let params = new URLSearchParams();
 
@@ -13,7 +13,7 @@ export async function getEquipmentsData(currentPage: number, category: string, t
   }
 
   if (availability !== null) {
-    params.append("availability", availability);
+    params.append("availability", availability === 'yes' ? true : false as any);
   }
 
   let response;

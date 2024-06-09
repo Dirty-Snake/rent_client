@@ -1,15 +1,14 @@
 import {
   Button,
-  Col,
+  Col, DatePicker,
   Form,
-  Input, message, Spin,
+  Input, message,
 } from "antd";
 import ModalHeader from "../../../shared/ModalHeader";
 import React, { useEffect } from "react";
-import useUserDataByID from "../../../entities/user/hooks/useUserDataByID";
-import useUpdateUser from "../../../entities/user/hooks/useUpdateUser";
+import { useRenEnd } from "../../../entities/equipments/hooks/useRenEnd";
 
-export default function EditModal({
+export default function ReturnModal({
                                     onClose,
                                     id
                                   }: any){
@@ -17,50 +16,33 @@ export default function EditModal({
   const [form] = Form.useForm<{}>();
 
   const {
-    userDataById,
-    isLoading
-  } = useUserDataByID(id)
-
-  const {
-    handleUpdate,
+    handleAdd,
     isPending,
-    isSuccess,
-  } = useUpdateUser()
+    isSuccess
+  } = useRenEnd()
 
   const onFinish = (value: any) => {
-    handleUpdate(id, value)
+    const data = {
+      id: id,
+      data: {
+        ...value,
+        rental_end_date: value?.rental_end_date?.toISOString()
+      }
+    }
+    console.log(data)
+    handleAdd(data)
   }
 
   useEffect(() => {
-    form?.setFieldsValue({
-      email: userDataById?.email,
-      firstname: userDataById?.firstname,
-      lastname: userDataById?.lastname
-    })
-  }, [userDataById])
-
-  useEffect(() =>{
-    if (isSuccess){
-      message.success('Вы успешно обновили данные')
+    if (isSuccess) {
+      form.resetFields()
+      message.success('Аренда инвентаря завершена')
     }
-  },[isSuccess])
-
-  if (isLoading){
-    return (
-      <div style={{
-        width: '100%',
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-        <Spin />
-      </div>
-    )
-  }
+  }, [isSuccess])
 
   return (
     <div className={"modal-wrapper"} style={{ padding: "30px" }}>
-      <ModalHeader title={"Редактирование"} onClose={() => {
+      <ModalHeader title={"Завершить аренду"} onClose={() => {
         form.resetFields()
         onClose()
       }} />
@@ -70,26 +52,25 @@ export default function EditModal({
         layout={"vertical"}
       >
         <Form.Item
-          rules={[{ required: true, type: 'email'}]}
-          name={"email"}
-          label={"Email"}
+          rules={[{ required: true }]}
+          name={"rental_end_date"}
+          label={"Дата окончания аренды"}
         >
-          <Input type="email" />
+          <DatePicker
+            showTime
+            placeholder={""}
+            format={"DD.MM.YYYY HH:mm"}
+            style={{width: "100%"}}
+          />
         </Form.Item>
         <Form.Item
           rules={[{ required: true }]}
-          name={"firstname"}
-          label={"Имя"}
+          name={"return_note"}
+          label={"Пометка"}
         >
-          <Input />
+          <Input/>
         </Form.Item>
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"lastname"}
-          label={"Фамилия"}
-        >
-          <Input />
-        </Form.Item>
+
         <Col style={{ display: "flex", gap: "15px" }}>
           <Button
             type={"primary"}

@@ -5,7 +5,6 @@ import BurderIcon from "../../assets/Icons/BurderIcon";
 import { useUnit } from "effector-react";
 import { $user, logout } from "../../entities/user/model/index";
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/logo.jpg";
 
 const { Title } = Typography;
 const { useToken } = theme;

@@ -3,7 +3,6 @@ import styles from './style.module.scss';
 import { Link, useLocation } from "react-router-dom";
 import { theme, Typography } from "antd";
 import { logout } from "../../entities/user/model/index";
-import logo from '../../assets/images/logo.jpg'
 
 const { useToken } = theme;
 const { Title } = Typography;

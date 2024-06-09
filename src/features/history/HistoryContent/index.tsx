@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './style.module.scss';
 import {
-  Button,
   Table,
-  Modal,
-  Dropdown,
-  MenuProps,
 } from "antd";
 import MaxWithLayout from "../../../layouts/MaxWithLayout/index";
 import useHistoryData from "../../../entities/history/hooks/useHistoryData";
-import { MoreOutlined } from "@ant-design/icons/lib";
 import dayjs from "dayjs";
 
 const HistoryContent = () => {
@@ -30,9 +25,9 @@ const HistoryContent = () => {
       key: "equipment",
       width: "16%",
       render: (text?: any, record?: any) => (
-        <>
+        <div style={{color: text ? '#000': '#000'}}>
           {record?.equipment?.name}
-        </>
+        </div>
       ),
     },
     {
@@ -75,9 +70,9 @@ const HistoryContent = () => {
       key: "return_note",
       width: "16%",
       render: (text?: any, record?: any) => (
-        <>
+        <div style={{color: text ? '#000': '#000'}}>
           {record?.user?.email}
-        </>
+        </div>
       ),
     },
   ];

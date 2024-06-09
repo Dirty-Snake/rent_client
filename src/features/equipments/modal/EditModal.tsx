@@ -1,6 +1,6 @@
 import {
   Button,
-  Col, DatePicker,
+  Col,
   Form,
   Input, message,
   Select, Spin,
@@ -10,9 +10,7 @@ import ModalHeader from "../../../shared/ModalHeader";
 import React, { useEffect } from "react";
 import useTagData from "../../../entities/tags/hooks/useTagData";
 import useCategoriesData from "../../../entities/categories/hooks/useCategoriesData";
-import useUserData from "../../../entities/user/hooks/useUserData";
 import useEquipmentsDataByID from "../../../entities/equipments/hooks/useEquipmentsDataByID";
-import dayjs from "dayjs";
 import useUpdateEquipments from "../../../entities/equipments/hooks/useUpdateEquipments";
 
 export default function EditModal({

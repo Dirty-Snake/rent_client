@@ -20,7 +20,6 @@ import useTagData from "../../../entities/tags/hooks/useTagData";
 import InfoModal from "../modal/InfoModal";
 import useCategoriesData from "../../../entities/categories/hooks/useCategoriesData";
 import RentModal from "../modal/RentModal";
-import { f } from "vite/dist/node/types.d-aGj9QkWt";
 import ReturnModal from "../modal/ReturnModal";
 
 const EquipmentsContent = () => {
@@ -348,10 +347,10 @@ const EquipmentsContent = () => {
             <Select.Option key={null} value={null}>
               Все
             </Select.Option>
-            <Select.Option key={true} value={true}>
+            <Select.Option key={'yea'} value={true}>
               Только доступные
             </Select.Option>
-            <Select.Option key={false} value={false}>
+            <Select.Option key={'no'} value={false}>
               Только не доступные
             </Select.Option>
           </Select>

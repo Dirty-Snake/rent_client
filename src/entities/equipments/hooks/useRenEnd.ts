@@ -1,19 +1,19 @@
 import { useCallback } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addEquipments } from "../api/index";
+import { endRent } from "../api/index";
 import { message } from "antd";
 
-export const useAddEquipments = () => {
+export const useRenEnd = () => {
 
   const queryClient = useQueryClient();
 
   const { mutateAsync, ...options } = useMutation<any, Error, any>({
-    mutationFn: addEquipments,
+    mutationFn: endRent,
     onError: error => new Error(error?.message)
   });
 
   const handleAdd = useCallback(
-    async(data: string) => {
+    async(data: any) => {
       try {
         await mutateAsync(data);
         await queryClient?.invalidateQueries({ queryKey: ['EQUIPMENTS_DATA'] });

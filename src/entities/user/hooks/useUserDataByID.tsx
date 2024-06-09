@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "../api/index";
 
 export default function useUserDataByID(id: string): {
-  locationDataById: any | undefined;
+  userDataById: any | undefined;
   isLoading: boolean;
 }{
 

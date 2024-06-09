@@ -7,7 +7,6 @@ import {
 
 import ModalHeader from "../../../shared/ModalHeader";
 import React, { useEffect } from "react";
-import { useAddLTag } from "../../../entities/tags/hooks/useAddLTag";
 import { useAddUser } from "../../../entities/user/hooks/useAddUser";
 
 export default function AddModal({
