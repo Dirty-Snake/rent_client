@@ -47,7 +47,7 @@ export async function patchUser(data: any){
     }
   );
   if (response?.status !== 200) {
-    throw new Error(response.data.message);
+    // throw new Error(response.data.message);
   }
   return response.data;
 }

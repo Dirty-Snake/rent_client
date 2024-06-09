@@ -35,7 +35,7 @@ api.interceptors.response.use(
     try {
       return Promise.resolve(ApiErrorHandler(response));
     } catch (e: any) {
-      message.error(e.message);
+      // message.error(e.message);
       return Promise.reject(e);
     }
   },
