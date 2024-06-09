@@ -20,7 +20,7 @@ const LoginContent: FC = () => {
   useEffect(() =>{
     form.setFieldsValue({
       username: 'admin',
-      password: '52Test52!!'
+      password: '52Test!!22'
     })
   },[])
 

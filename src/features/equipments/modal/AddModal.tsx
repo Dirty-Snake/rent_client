@@ -9,8 +9,8 @@ import {
 import ModalHeader from "../../../shared/ModalHeader";
 import React, { useEffect } from "react";
 import { useAddEquipments } from "../../../entities/equipments/hooks/useAddEquipments";
-import useLocationData from "../../../entities/location/hooks/useLocationData";
-import useBrandData from "../../../entities/brends/hooks/useBrandData";
+import useTagData from "../../../entities/tags/hooks/useTagData";
+import useCategoriesData from "../../../entities/categories/hooks/useCategoriesData";
 import useUserData from "../../../entities/user/hooks/useUserData";
 
 export default function AddModal({
@@ -26,21 +26,17 @@ export default function AddModal({
   } = useAddEquipments()
 
   const {
-    locationData,
+    tagData,
     setLimit,
     isLoading
-  } = useLocationData()
+  } = useTagData()
 
   const {
-    brandsData,
+    categoryData,
     setLimit: setLimitBrand,
     isLoading: isLoadingBrand,
-  } = useBrandData()
+  } = useCategoriesData()
 
-  const {
-    userData,
-    isLoading: isLoadingUsers,
-  } = useUserData()
 
   const onFinish = (value: any) => {
     console.log(value)
@@ -55,7 +51,7 @@ export default function AddModal({
   useEffect(() =>{
     if (isSuccess){
       form.resetFields()
-      message.success('Вы успешно добавили местоположение')
+      message.success('Вы успешно добавили инвентарь')
     }
   },[isSuccess])
 
@@ -84,64 +80,31 @@ export default function AddModal({
         >
           <Input />
         </Form.Item>
-
         <Form.Item
-          rules={[{ required: true, message: 'Пожалуйста, введите артикул (8 символов)', pattern: /^.{8}$/ }]}
-          name={"sku"}
-          label={"Артикул (8 символов)"}
+          rules={[{ required: true }]}
+          name={"price"}
+          label={"Цена"}
+        >
+          <Input type={'number'}/>
+        </Form.Item>
+        <Form.Item
+          rules={[{ required: true }]}
+          name={"condition"}
+          label={"Состояние"}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
           rules={[{ required: true }]}
-          name={"model"}
-          label={"Модель"}
+          name={"size"}
+          label={"Размер"}
         >
-          <Input />
+          <Input/>
         </Form.Item>
-
         <Form.Item
           rules={[{ required: true }]}
-          name={"factory_number"}
-          label={"Заводской номер"}
-        >
-          <Input type={'number'}/>
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"period_use"}
-          label={"Срок полезного использования (в месяцах)"}
-        >
-          <Input type={'number'}/>
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"cost"}
-          label={"Стоимость"}
-        >
-          <Input type={'number'}/>
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"date_commissioning"}
-          label={"Дата списания предмета"}
-        >
-          <DatePicker
-            showTime
-            placeholder={""}
-            format="YYYY-MM-DD HH:mm"
-            style={{width: "100%"}}
-          />
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"decommissioned"}
-          label={"Списание предмета"}
+          name={"availability"}
+          label={"Доступность"}
         >
           <Radio.Group >
             <Radio value={true}>Да</Radio>
@@ -151,8 +114,8 @@ export default function AddModal({
 
         <Form.Item
           rules={[{ required: true }]}
-          name={"location_id"}
-          label={"Местоположение"}
+          name={"tag_id"}
+          label={"Тег"}
         >
           <Select
             style={{
@@ -164,7 +127,7 @@ export default function AddModal({
               isLoading
                 ?  <Spin />
                 :
-                locationData?.result?.map((option: any) => {
+                tagData?.data?.map((option: any) => {
                   return (
                     <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
                       {option?.name}
@@ -177,8 +140,8 @@ export default function AddModal({
 
         <Form.Item
           rules={[{ required: true }]}
-          name={"brand_id"}
-          label={"Производитель"}
+          name={"category_id"}
+          label={"Категория"}
         >
           <Select
             style={{
@@ -190,7 +153,7 @@ export default function AddModal({
               isLoadingBrand
                 ?  <Spin />
                 :
-                brandsData?.result?.map((option: any) => {
+                categoryData?.data?.map((option: any) => {
                   return (
                     <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
                       {option?.name}
@@ -200,33 +163,6 @@ export default function AddModal({
             }
           </Select>
         </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"responsible_id"}
-          label={"Пользователь"}
-        >
-          <Select
-            style={{
-              width: '100%'
-            }}
-            filterOption={false}
-          >
-            {
-              isLoadingUsers
-                ?  <Spin />
-                :
-                userData?.map((option: any) => {
-                  return (
-                    <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
-                      {option?.username}
-                    </Select.Option>
-                  );
-                })
-            }
-          </Select>
-        </Form.Item>
-
         <Col style={{ display: "flex", gap: "15px" }}>
           <Button
             type={"primary"}

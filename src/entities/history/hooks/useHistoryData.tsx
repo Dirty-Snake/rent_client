@@ -1,30 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserData } from "../api/index";
+import { getHistoryData } from "../api/index";
 import { useState } from "react";
 
-export default function useUserData(): {
-  userData: any | undefined;
+export default function useHistoryData(): {
+  historyData: any | undefined;
   currentPage: number,
-  limit: number,
-  setLimit: (limit: number) =>void,
   setCurrentPage: (page: number) =>void,
+  setLimit: (page: number) =>void,
   isLoading?: boolean;
 } {
 
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [limit, setLimit] = useState<number>(10)
 
-  const { data: userData, isLoading } = useQuery({
-    queryKey: ['USER_DATA', currentPage],
-    queryFn: async () => await getUserData(currentPage, limit),
+  const { data: historyData, isLoading } = useQuery({
+    queryKey: ['HISTORY_DATA', currentPage, limit],
+    queryFn: async () => await getHistoryData(currentPage, limit),
     retryOnMount: false
   });
 
   return {
-    userData,
+    historyData,
     currentPage,
     setCurrentPage,
-    limit,
     setLimit,
     isLoading,
   };

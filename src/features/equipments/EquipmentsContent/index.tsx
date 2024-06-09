@@ -16,8 +16,12 @@ import EditModal from "../modal/EditModal";
 import useEquipmentsData from "../../../entities/equipments/hooks/useEquipmentsData";
 import { useDeleteEquipments } from "../../../entities/equipments/hooks/useDeleteEquipments";
 import EyeIcon from "../../../assets/Icons/EyeIcon";
-import useLocationData from "../../../entities/location/hooks/useLocationData";
+import useTagData from "../../../entities/tags/hooks/useTagData";
 import InfoModal from "../modal/InfoModal";
+import useCategoriesData from "../../../entities/categories/hooks/useCategoriesData";
+import RentModal from "../modal/RentModal";
+import { f } from "vite/dist/node/types.d-aGj9QkWt";
+import ReturnModal from "../modal/ReturnModal";
 
 const EquipmentsContent = () => {
 
@@ -26,15 +30,25 @@ const EquipmentsContent = () => {
     currentPage,
     setCurrentPage,
     isLoading,
-    locationId,
-    setLocationId
+    categoryId,
+    tegId,
+    setCategoryId,
+    setTegId,
+    availability,
+    setAvailability,
   } = useEquipmentsData()
 
   const {
-    locationData,
+    tagData,
     setLimit,
     isLoading: isLoadingLocation
-  } = useLocationData()
+  } = useTagData()
+
+  const {
+    categoryData,
+    setLimit: setLimitBrand,
+    isLoading: isLoadingBrand,
+  } = useCategoriesData()
 
   const {
     handleDelete,
@@ -42,7 +56,14 @@ const EquipmentsContent = () => {
   } = useDeleteEquipments()
 
   const [isOpenModalAdd, setIsOpenModalAdd] = useState<boolean>(false)
-
+  const [rentModal, setRentModal] = useState<any>({
+    isOpen: false,
+    id: null
+  })
+  const [returnModal, setReturnModal] = useState<any>({
+    isOpen: false,
+    id: null
+  })
   const [isOpenModalInfo, setIsOpenModalInfo] = useState<{ id: string | null, isOpen: boolean }>({
     id: null,
     isOpen: false
@@ -61,6 +82,24 @@ const EquipmentsContent = () => {
         </span>
       ),
       key: "EDIT",
+    },
+    {
+      label: (
+        <span style={{ display: "flex", gap: "10px" }}>
+          <EditIcon />
+          Начать аренду
+        </span>
+      ),
+      key: "RENT",
+    },
+    {
+      label: (
+        <span style={{ display: "flex", gap: "10px" }}>
+          <EditIcon />
+          Завершить аренду
+        </span>
+      ),
+      key: "RETURN",
     },
     {
       label: (
@@ -96,6 +135,18 @@ const EquipmentsContent = () => {
           case "DELETE":
             handleDelete(record?.id)
             break;
+          case "RENT":
+            setRentModal({
+              isOpen: true,
+              id: record?.id
+            })
+            break;
+          case "RETURN":
+            setReturnModal({
+              isOpen: true,
+              id: record?.id
+            })
+            break;
         }
       },
     };
@@ -106,7 +157,7 @@ const EquipmentsContent = () => {
       title: "",
       dataIndex: "id",
       key: "id",
-      width: "19%",
+      width: "5%",
       render: (text: any) => (
         <div
           style={{
@@ -125,47 +176,84 @@ const EquipmentsContent = () => {
       title: "Название",
       dataIndex: "name",
       key: "name",
-      width: "19%",
+      width: "10%",
     },
     {
       title: "Описание",
       dataIndex: "description",
       key: "description",
-      width: "19%",
+      width: "10%",
     },
     {
-      title: "Списание предмета",
-      dataIndex: "decommissioned",
-      key: "decommissioned",
-      width: "19%",
+      title: "Размер",
+      dataIndex: "size",
+      key: "size",
+      width: "10%",
+    },
+    {
+      title: "Доступность",
+      dataIndex: "availability",
+      key: "availability",
+      width: "10%",
       render: (text: any) => (
         <div>
-          {text ? 'Да' : 'Нет'}
+          {text
+            ? <div style={{ width: 15, height: 15, backgroundColor: 'green', borderRadius: 50 }} />
+            : <div style={{ width: 15, height: 15, backgroundColor: 'red', borderRadius: 50 }} />
+          }
         </div>
       )
     },
     {
-      title: "Местоположение",
+      title: "Цена",
+      dataIndex: "price",
+      key: "price",
+      width: "10%",
+    },
+    {
+      title: "Состояние",
+      dataIndex: "condition",
+      key: "condition",
+      width: "10%",
+    },
+    {
+      title: "Тег",
       dataIndex: "",
       key: "",
-      width: "19%",
+      width: "10%",
       render: (record: any) => (
         <div>
-          {record?.location?.name}
+          {record?.tag?.name}
         </div>
       )
     },
     {
-      title: "Артикул",
-      dataIndex: "sku",
-      key: "sku",
-      width: "19%",
+      title: "Категория",
+      dataIndex: "",
+      key: "",
+      width: "10%",
+      render: (record: any) => (
+        <div>
+          {record?.category?.name}
+        </div>
+      )
+    },
+    {
+      title: "Арендатель",
+      dataIndex: "",
+      key: "",
+      width: "10%",
+      render: (record: any) => (
+        <div>
+          {record?.user?.email || '---'}
+        </div>
+      )
     },
     {
       title: "",
       dataIndex: "action",
       key: "action",
-      width: "10%",
+      width: "5%",
       render: (text?: any, record?: any) => (
         <div
           style={{
@@ -188,6 +276,7 @@ const EquipmentsContent = () => {
 
   useEffect(() => {
     setLimit(1000)
+    setLimitBrand(1000)
   }, [])
 
   return (
@@ -202,18 +291,18 @@ const EquipmentsContent = () => {
             style={{
               width: '100%'
             }}
-            value={locationId}
-            onChange={(e: any) => setLocationId(e)}
+            value={tegId}
+            onChange={(e: any) => setTegId(e)}
             filterOption={false}
           >
             <Select.Option key={null} value={null}>
-              Не выбрано
+              Все теги
             </Select.Option>
             {
               isLoadingLocation
                 ? <Spin />
                 :
-                locationData?.result?.map((option: any) => {
+                tagData?.data?.map((option: any) => {
                   return (
                     <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
                       {option?.name}
@@ -223,27 +312,68 @@ const EquipmentsContent = () => {
             }
           </Select>
 
+          <Select
+            style={{
+              width: '100%'
+            }}
+            value={categoryId}
+            onChange={(e: any) => setCategoryId(e)}
+            filterOption={false}
+          >
+            <Select.Option key={null} value={null}>
+              Все категории
+            </Select.Option>
+            {
+              isLoadingBrand
+                ? <Spin />
+                :
+                categoryData?.data?.map((option: any) => {
+                  return (
+                    <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
+                      {option?.name}
+                    </Select.Option>
+                  );
+                })
+            }
+          </Select>
+
+          <Select
+            style={{
+              width: '100%'
+            }}
+            value={availability}
+            onChange={(e: any) => setAvailability(e)}
+            filterOption={false}
+          >
+            <Select.Option key={null} value={null}>
+              Все
+            </Select.Option>
+            <Select.Option key={true} value={true}>
+              Только доступные
+            </Select.Option>
+            <Select.Option key={false} value={false}>
+              Только не доступные
+            </Select.Option>
+          </Select>
         </div>
 
-        <div className={styles.table}>
-
+        <div>
           <Table
             loading={isLoading || isLoadingDelete}
             className={"product-arrival-table"}
             columns={columns}
-            dataSource={inventoryBookData?.result || []}
+            dataSource={inventoryBookData?.data || []}
             scroll={{ x: true }}
             pagination={{
               onChange: (page): any => setCurrentPage(page),
               position: ["bottomCenter"],
               pageSize: 10,
-              total: Number(inventoryBookData?.total),
+              total: Number(inventoryBookData?.totalPages),
               showSizeChanger: false,
               current: currentPage,
             }}
           />
         </div>
-
       </div>
 
       <Modal
@@ -254,6 +384,36 @@ const EquipmentsContent = () => {
       >
         <AddModal
           onClose={() => setIsOpenModalAdd(false)}
+        />
+      </Modal>
+
+      <Modal
+        open={rentModal?.isOpen}
+        closable={false}
+        footer={null}
+        width={600}
+      >
+        <RentModal
+          id={rentModal?.id}
+          onClose={() => setRentModal({
+            id: null,
+            isOpen: false
+          })}
+        />
+      </Modal>
+
+      <Modal
+        open={returnModal.isOpen}
+        closable={false}
+        footer={null}
+        width={600}
+      >
+        <ReturnModal
+          id={returnModal?.id}
+          onClose={() => setReturnModal({
+            isOpen: false,
+            id: null
+          })}
         />
       </Modal>
 

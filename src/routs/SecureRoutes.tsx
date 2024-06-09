@@ -2,8 +2,10 @@ import React, { FC } from 'react';
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout/index";
 import EquipmentsPage from "../pages/equipments/EquipmentsPage";
-import LocationPage from "../pages/location/LocationPage";
-import BrendsPage from "../pages/brends/BrendsPage";
+import TagsPage from "../pages/tags/TagsPage";
+import CategoriesPage from "../pages/categories/CategoriesPage";
+import UsersPage from "../pages/users/UsersPage";
+import HistoryPage from "../pages/history/HistoryPage";
 
 const SecureRoutes: FC = () => {
 
@@ -13,11 +15,10 @@ const SecureRoutes: FC = () => {
 
       <Route path={"/"} element={<AppLayout />}>
         <Route path="equipments" element={<EquipmentsPage />} />
-        <Route path="categories" element={<BrendsPage />} />
-        <Route path="tags" element={<LocationPage />} />
-        <Route path="users" element={<LocationPage />} />
-        <Route path="history" element={<LocationPage />} />
-
+        <Route path="categories" element={<CategoriesPage />} />
+        <Route path="tags" element={<TagsPage />} />
+        <Route path="users" element={<UsersPage />} />
+        <Route path="history" element={<HistoryPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to={'/equipments'} />} />

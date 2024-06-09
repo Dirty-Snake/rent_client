@@ -60,7 +60,7 @@ const SideBarNav = () => {
           }
         </div>
 
-        <div className={styles.mainNav} onClick={() => logout()} className={styles.logout}>
+        <div className={styles.logout} onClick={() => logout()}>
           <button>
             Выйти
           </button>

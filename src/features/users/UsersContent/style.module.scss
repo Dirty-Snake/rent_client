@@ -13,11 +13,9 @@
 .top {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
 
 
     @media(max-width: 1024px) {
         justify-content: center;
-        flex-direction: column;
     }
 }

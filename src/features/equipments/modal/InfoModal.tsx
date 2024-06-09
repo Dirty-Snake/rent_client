@@ -12,7 +12,7 @@ export default function InfoModal({
                                   }: any){
 
   const {
-    locationDataById,
+    equipmentsDataById,
     isLoading: isLoadingDataById,
   } = useEquipmentsDataByID(id)
 
@@ -42,53 +42,47 @@ export default function InfoModal({
         }}
       >
         <p>
-          Название: {locationDataById?.name}
+          Название: {equipmentsDataById?.name}
         </p>
         <p>
-          Описание: {locationDataById?.description}
+          Описание: {equipmentsDataById?.description}
         </p>
         <p>
-          Артикул: {locationDataById?.sku}
+          Цена: {equipmentsDataById?.price}
         </p>
         <p>
-          Модель: {locationDataById?.info?.model}
+          Состояние: {equipmentsDataById?.condition}
         </p>
         <p>
-          Заводской номер: {locationDataById?.info?.factory_number}
+          Размер: {equipmentsDataById?.size}
         </p>
         <p>
-          Срок полезного использования (в месяцах): {locationDataById?.info?.period_use}
+          Доступность:
+          {equipmentsDataById?.availability
+            ? <div style={{ display: 'inline-block', marginLeft: 10, width: 15, height: 15, backgroundColor: 'green', borderRadius: 50 }} />
+            : <div style={{ display: 'inline-block', marginLeft: 10, width: 15, height: 15, backgroundColor: 'red', borderRadius: 50 }} />
+          }
         </p>
-        <p>
-          Стоимость: {Number(locationDataById?.info?.cost)}
-        </p>
-        <p>
-          Дата списания предмета: {dayjs(locationDataById?.info?.date_commissioning).format('YYYY-MM-DD HH:mm')}
-        </p>
-        <p>
-          Списание предмета: {locationDataById?.decommissioned ? 'Да' : 'Нет'}
-        </p>
-        <p>
-          Местоположение: {locationDataById?.location?.id}
-        </p>
-        <p>
-          Производитель: {locationDataById?.info?.brand?.id}
-        </p>
-        <p>
-          Пользователь: {locationDataById?.responsible?.id}
-        </p>
-        <div>
-          История ответственных:
-          <ul>
-            {
-              locationDataById?.histories?.map((item: any, index: any) =>
-              <li style={{paddingLeft: 10}}>
-                {index + 1}. {item?.user?.username}
-              </li>
-              )
-            }
-          </ul>
-        </div>
+        {equipmentsDataById?.user?.email &&
+        <>
+            <p>
+                Время начала аренды: {dayjs(equipmentsDataById?.rental_start_date).format('YYYY-MM-DD HH:mm')}
+            </p>
+            <p>
+                Время окончания аренды: {dayjs(equipmentsDataById?.rental_end_date).format('YYYY-MM-DD HH:mm')}
+            </p>
+            <p>
+                Тег: {equipmentsDataById?.tag?.name}
+            </p>
+            <p>
+                Пользователь: {equipmentsDataById?.user?.firstname + " " + equipmentsDataById?.user?.lastname}
+            </p>
+            <p>
+                Почта пользователя: {equipmentsDataById?.user?.email}
+            </p>
+        </>
+        }
+
       </div>
     </div>
   );

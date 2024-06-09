@@ -8,8 +8,8 @@ import {
 } from "antd";
 import ModalHeader from "../../../shared/ModalHeader";
 import React, { useEffect } from "react";
-import useLocationData from "../../../entities/location/hooks/useLocationData";
-import useBrandData from "../../../entities/brends/hooks/useBrandData";
+import useTagData from "../../../entities/tags/hooks/useTagData";
+import useCategoriesData from "../../../entities/categories/hooks/useCategoriesData";
 import useUserData from "../../../entities/user/hooks/useUserData";
 import useEquipmentsDataByID from "../../../entities/equipments/hooks/useEquipmentsDataByID";
 import dayjs from "dayjs";
@@ -23,7 +23,7 @@ export default function EditModal({
   const [form] = Form.useForm<{}>();
 
   const {
-    locationDataById,
+    equipmentsDataById,
     isLoading: isLoadingDataById,
   } = useEquipmentsDataByID(id)
 
@@ -33,22 +33,19 @@ export default function EditModal({
     isSuccess
   } = useUpdateEquipments()
 
+
   const {
-    locationData,
+    tagData,
     setLimit,
     isLoading
-  } = useLocationData()
+  } = useTagData()
 
   const {
-    brandsData,
+    categoryData,
     setLimit: setLimitBrand,
     isLoading: isLoadingBrand,
-  } = useBrandData()
+  } = useCategoriesData()
 
-  const {
-    userData,
-    isLoading: isLoadingUsers,
-  } = useUserData()
 
   const onFinish = (value: any) => {
     handleUpdate(id, { ...value, decommissioned: Boolean(value.decommissioned) })
@@ -65,22 +62,15 @@ export default function EditModal({
     }
   }, [isSuccess])
 
+  console.log(equipmentsDataById)
   useEffect(() => {
     form?.setFieldsValue({
-      name: locationDataById?.name,
-      description: locationDataById?.description,
-      sku: locationDataById?.sku,
-      model: locationDataById?.info?.model,
-      factory_number: locationDataById?.info?.factory_number,
-      period_use: locationDataById?.info?.period_use,
-      cost: Number(locationDataById?.info?.cost),
-      date_commissioning: dayjs(locationDataById?.info?.date_commissioning),
-      decommissioned: locationDataById?.decommissioned,
-      location_id: locationDataById?.location?.id,
-      brand_id: locationDataById?.info?.brand?.id,
-      responsible_id: locationDataById?.responsible?.id,
+      ...equipmentsDataById,
+      price: Number(equipmentsDataById?.price),
+      category_id: equipmentsDataById?.category?.id,
+      tag_id: equipmentsDataById?.tag?.id,
     })
-  }, [locationDataById])
+  }, [equipmentsDataById])
 
   if (isLoadingDataById) {
     return (
@@ -120,66 +110,33 @@ export default function EditModal({
         >
           <Input />
         </Form.Item>
-
         <Form.Item
-          rules={[{ required: true, message: 'Пожалуйста, введите артикул (8 символов)', pattern: /^.{8}$/ }]}
-          name={"sku"}
-          label={"Артикул (8 символов)"}
+          rules={[{ required: true }]}
+          name={"price"}
+          label={"Цена"}
+        >
+          <Input type={'number'}/>
+        </Form.Item>
+        <Form.Item
+          rules={[{ required: true }]}
+          name={"condition"}
+          label={"Состояние"}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
           rules={[{ required: true }]}
-          name={"model"}
-          label={"Модель"}
+          name={"size"}
+          label={"Размер"}
         >
-          <Input />
+          <Input/>
         </Form.Item>
-
         <Form.Item
           rules={[{ required: true }]}
-          name={"factory_number"}
-          label={"Заводской номер"}
+          name={"availability"}
+          label={"Доступность"}
         >
-          <Input type={'number'} />
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"period_use"}
-          label={"Срок полезного использования (в месяцах)"}
-        >
-          <Input type={'number'} />
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"cost"}
-          label={"Стоимость"}
-        >
-          <Input type={'number'} />
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"date_commissioning"}
-          label={"Дата списания предмета"}
-        >
-          <DatePicker
-            showTime
-            placeholder={""}
-            format="YYYY-MM-DD HH:mm"
-            style={{ width: "100%" }}
-          />
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"decommissioned"}
-          label={"Списание предмета"}
-        >
-          <Radio.Group>
+          <Radio.Group >
             <Radio value={true}>Да</Radio>
             <Radio value={false}>Нет</Radio>
           </Radio.Group>
@@ -187,8 +144,8 @@ export default function EditModal({
 
         <Form.Item
           rules={[{ required: true }]}
-          name={"location_id"}
-          label={"Местоположение"}
+          name={"tag_id"}
+          label={"Тег"}
         >
           <Select
             style={{
@@ -198,9 +155,9 @@ export default function EditModal({
           >
             {
               isLoading
-                ? <Spin />
+                ?  <Spin />
                 :
-                locationData?.result?.map((option: any) => {
+                tagData?.data?.map((option: any) => {
                   return (
                     <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
                       {option?.name}
@@ -213,8 +170,8 @@ export default function EditModal({
 
         <Form.Item
           rules={[{ required: true }]}
-          name={"brand_id"}
-          label={"Производитель"}
+          name={"category_id"}
+          label={"Категория"}
         >
           <Select
             style={{
@@ -224,38 +181,12 @@ export default function EditModal({
           >
             {
               isLoadingBrand
-                ? <Spin />
+                ?  <Spin />
                 :
-                brandsData?.result?.map((option: any) => {
+                categoryData?.data?.map((option: any) => {
                   return (
                     <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
                       {option?.name}
-                    </Select.Option>
-                  );
-                })
-            }
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          rules={[{ required: true }]}
-          name={"responsible_id"}
-          label={"Пользователь"}
-        >
-          <Select
-            style={{
-              width: '100%'
-            }}
-            filterOption={false}
-          >
-            {
-              isLoadingUsers
-                ? <Spin />
-                :
-                userData?.map((option: any) => {
-                  return (
-                    <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
-                      {option?.username}
                     </Select.Option>
                   );
                 })
