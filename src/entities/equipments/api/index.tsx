@@ -12,6 +12,8 @@ export async function getEquipmentsData(currentPage: number, category: string, t
     params.append("tag_id", teg);
   }
 
+  console.log('availability')
+  console.log(availability)
   if (availability !== null) {
     params.append("availability", availability === 'yes' ? true : false as any);
   }

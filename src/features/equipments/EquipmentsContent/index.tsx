@@ -347,10 +347,10 @@ const EquipmentsContent = () => {
             <Select.Option key={null} value={null}>
               Все
             </Select.Option>
-            <Select.Option key={'yes'} value={true}>
+            <Select.Option key={'yes'} value={'yes'}>
               Только доступные
             </Select.Option>
-            <Select.Option key={'no'} value={false}>
+            <Select.Option key={'no'} value={'no'}>
               Только не доступные
             </Select.Option>
           </Select>
