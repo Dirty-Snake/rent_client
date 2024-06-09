@@ -66,10 +66,10 @@ export default function InfoModal({
         {equipmentsDataById?.user?.email &&
         <>
             <p>
-                Время начала аренды: {dayjs(equipmentsDataById?.rental_start_date).format('YYYY-MM-DD HH:mm')}
+                Время начала аренды: { equipmentsDataById?.rental_start_date ? dayjs(equipmentsDataById?.rental_start_date).format('YYYY-MM-DD HH:mm') : '-'}
             </p>
             <p>
-                Время окончания аренды: {dayjs(equipmentsDataById?.rental_end_date).format('YYYY-MM-DD HH:mm')}
+                Время окончания аренды: {equipmentsDataById?.rental_end_date ? dayjs(equipmentsDataById?.rental_end_date).format('YYYY-MM-DD HH:mm') : '-'}
             </p>
             <p>
                 Тег: {equipmentsDataById?.tag?.name}
