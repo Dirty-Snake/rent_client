@@ -52,7 +52,6 @@ export default function ReturnModal({
         layout={"vertical"}
       >
         <Form.Item
-          rules={[{ required: true }]}
           name={"rental_end_date"}
           label={"Дата окончания аренды"}
         >
@@ -64,7 +63,6 @@ export default function ReturnModal({
           />
         </Form.Item>
         <Form.Item
-          rules={[{ required: true }]}
           name={"return_note"}
           label={"Пометка"}
         >
