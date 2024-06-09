@@ -140,7 +140,7 @@ const CategoriesContent = () => {
               onChange: (page): any => setCurrentPage(page),
               position: ["bottomCenter"],
               pageSize: 10,
-              total: Number(categoryData?.totalPages),
+              total: Number(categoryData?.total),
               showSizeChanger: false,
               current: currentPage,
             }}

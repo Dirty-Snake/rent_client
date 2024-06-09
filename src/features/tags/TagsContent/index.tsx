@@ -140,7 +140,7 @@ const TagsContent = () => {
               onChange: (page): any => setCurrentPage(page),
               position: ["bottomCenter"],
               pageSize: 10,
-              total: Number(tagData?.totalPages),
+              total: Number(tagData?.total),
               showSizeChanger: false,
               current: currentPage,
             }}

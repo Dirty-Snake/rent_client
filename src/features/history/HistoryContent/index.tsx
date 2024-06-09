@@ -91,7 +91,7 @@ const HistoryContent = () => {
               onChange: (page): any => setCurrentPage(page),
               position: ["bottomCenter"],
               pageSize: 10,
-              total: Number(historyData?.totalPages),
+              total: Number(historyData?.total),
               showSizeChanger: false,
               current: currentPage,
             }}

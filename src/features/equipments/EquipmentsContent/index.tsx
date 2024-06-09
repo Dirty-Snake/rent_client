@@ -347,7 +347,7 @@ const EquipmentsContent = () => {
             <Select.Option key={null} value={null}>
               Все
             </Select.Option>
-            <Select.Option key={'yea'} value={true}>
+            <Select.Option key={'yes'} value={true}>
               Только доступные
             </Select.Option>
             <Select.Option key={'no'} value={false}>
@@ -367,7 +367,7 @@ const EquipmentsContent = () => {
               onChange: (page): any => setCurrentPage(page),
               position: ["bottomCenter"],
               pageSize: 10,
-              total: Number(inventoryBookData?.totalPages),
+              total: Number(inventoryBookData?.total),
               showSizeChanger: false,
               current: currentPage,
             }}

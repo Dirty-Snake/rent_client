@@ -162,7 +162,7 @@ const UsersContent = () => {
               onChange: (page): any => setCurrentPage(page),
               position: ["bottomCenter"],
               pageSize: 10,
-              total: Number(userData?.totalPages),
+              total: Number(userData?.total),
               showSizeChanger: false,
               current: currentPage,
             }}
