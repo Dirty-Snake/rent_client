@@ -6,7 +6,7 @@ import {
   Select, Spin,
 } from "antd";
 import ModalHeader from "../../../shared/ModalHeader";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useUserData from "../../../entities/user/hooks/useUserData";
 import { useRentStart } from "../../../entities/equipments/hooks/useRentStart";
 
@@ -29,6 +29,8 @@ export default function RentModal({
     isLoading
   } = useUserData()
 
+  const [data, setData] = useState<any>(userData?.data);
+
   const onFinish = (value: any) => {
     const data = {
       id: id,
@@ -37,9 +39,22 @@ export default function RentModal({
         rental_end_date: value?.rental_end_date?.toISOString()
       }
     }
-    console.log(data)
     handleAdd(data)
   }
+
+  const handleSearch = (e: any) =>{
+    let filter;
+    if (e){
+      filter = data?.filter((item: any) => item?.email?.toLowerCase().includes(e?.toLowerCase()));
+    } else {
+      filter = userData?.data
+    }
+    setData(filter)
+  }
+
+  useEffect(() =>{
+    setData(userData?.data)
+  },[isLoading])
 
   useEffect(() => {
     setLimit(1000)
@@ -85,12 +100,15 @@ export default function RentModal({
               width: '100%'
             }}
             filterOption={false}
+            showSearch
+            onSearch={(e: any) => handleSearch(e)}
+
           >
             {
               isLoading
                 ? <Spin />
                 :
-                userData?.data?.map((option: any) => {
+                data?.map((option: any) => {
                   return (
                     <Select.Option key={option?.id?.toString()} value={option?.id?.toString()}>
                       {option?.email}
